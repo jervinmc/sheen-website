@@ -1,27 +1,30 @@
-# Step 1: Build the Nuxt.js application
-FROM node:16 AS build
+# Step 1: Build the Nuxt.js app
+FROM node:20.18.1 AS build
 
+# Set the working directory
 WORKDIR /app
 
-COPY package.json yarn.lock ./
-RUN yarn install
+# Install dependencies
+COPY package*.json ./
+RUN npm install
 
-COPY . ./
-RUN yarn build
+# Copy the rest of the application files
+COPY . .
 
-# Step 2: Serve the application with NGINX
+# Build the Nuxt.js app
+RUN npm run build
+
+# Step 2: Set up the Nginx image to serve the Nuxt.js app
 FROM nginx:alpine
 
-# Copy the built files from the build stage to NGINX's html directory
-COPY --from=build /app/.nuxt /usr/share/nginx/html/.nuxt
-COPY --from=build /app/static /usr/share/nginx/html/static
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Copy NGINX config file
+# Copy the custom Nginx configuration file
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
-# Expose port 80
-EXPOSE 80
+# Copy the built Nuxt.js app from the build stage
+COPY --from=build /app/dist /usr/share/nginx/html
 
-# Start NGINX
+# Expose ports for HTTP and HTTPS
+EXPOSE 80 443
+
+# Start Nginx in the foreground
 CMD ["nginx", "-g", "daemon off;"]
