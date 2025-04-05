@@ -1,23 +1,23 @@
-# Use official Node.js image
+# Use Node.js 20 image
 FROM node:20-alpine
 
-# Set working directory
+# Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json (or yarn.lock) files
-COPY package.json package-lock.json* ./
+# Copy package.json and package-lock.json for dependencies
+COPY package.json package-lock.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application code
+# Copy the rest of the application files
 COPY . .
 
-# Build the Nuxt app
+# Build Nuxt.js for production
 RUN npm run build
 
-# Expose the default Nuxt port
+# Expose the port
 EXPOSE 3000
 
-# Start the Nuxt app
+# Start Nuxt.js in production mode
 CMD ["npm", "run", "start"]

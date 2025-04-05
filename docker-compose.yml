@@ -1,31 +1,35 @@
-version: '3.8'
+version: "3.7"
 
 services:
   nuxt:
     build:
-      context: .  # Context refers to the root directory, where Dockerfile should be
-      dockerfile: Dockerfile  # Path to the Dockerfile
-    working_dir: /app
+      context: .
+      dockerfile: Dockerfile
+    container_name: sheen-website_nuxt_1
+    environment:
+      - NODE_ENV=production
     volumes:
-      - .:/app   # Mount the current directory to /app inside the container
-    command: npm run dev
+      - .:/app
     ports:
-      - "3000:3000"
+      - "3000:3000" # Exposing Nuxt to port 3000 for Nginx to proxy
     networks:
-      - app-network
+      - sheen-website-network
 
   nginx:
     image: nginx:alpine
+    container_name: sheen-website_nginx_1
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - /etc/letsencrypt:/etc/letsencrypt:ro # Mount AWS SSL certificates directory
+      - ./dist:/usr/share/nginx/html # Serve the Nuxt production files
     ports:
       - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf  # Custom nginx config
-      - /etc/letsencrypt/live/sheen-antel.homeagent.site:/etc/letsencrypt/live/sheen-antel.homeagent.site  # Mount Let's Encrypt certificates
-      - ./dist:/usr/share/nginx/html   # Mount the `dist` folder to serve the built app
+      - "443:443" # Expose HTTPS port 443
+    depends_on:
+      - nuxt
     networks:
-      - app-network
+      - sheen-website-network
 
 networks:
-  app-network:
+  sheen-website-network:
     driver: bridge
