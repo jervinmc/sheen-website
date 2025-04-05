@@ -3,10 +3,12 @@
       <v-card flat>
         <v-row no-gutters class="full-height-row">
           <!-- Left Image -->
-          <v-col cols="4" class="pa-0 fade-bee delay-1 full-height">
+          <v-col :cols="12" :md="4" class="pa-0 fade-bee delay-1 full-height">
             <v-img
               src="/images/service-image-1.jpg"
-              height="100%"
+              height="auto"
+              max-height="100vh"
+              width="100%"
               cover
             >
               <div class="dark-overlay" />
@@ -14,7 +16,7 @@
           </v-col>
   
           <!-- Center Cards (Stacked) -->
-          <v-col cols="4" class="pa-0 full-height">
+          <v-col :cols="12" :md="4" class="pa-0 full-height">
             <v-row no-gutters class="full-height">
               <v-col cols="12" class="fade-bee delay-2">
                 <v-card color="#e8e4e4" class="d-flex justify-center align-center pa-10" height="100%">
@@ -34,7 +36,7 @@
           </v-col>
   
           <!-- Right Image -->
-          <v-col cols="4" class="pa-0 fade-bee delay-4 full-height">
+          <v-col :cols="12" :md="4" class="pa-0 fade-bee delay-4 full-height">
             <v-card dark class="d-flex justify-center full-height align-center" color="#fb7c1c"> 
                 <div>
                     <div align="center" class="text-h6">
@@ -51,9 +53,34 @@
     </div>
   </template>
   
+  <script>
+  export default {
+    mounted() {
+      const observer = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('animate');
+              obs.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.2 }
+      );
+  
+      document.querySelectorAll('.fade-bee').forEach((el) => {
+        observer.observe(el);
+      });
+    },
+  };
+  </script>
+  
   <style scoped>
   .full-height-row {
     height: 100vh; /* Makes the row take the full height */
+    display: flex;
+    flex-wrap: wrap; /* Ensure columns wrap on smaller screens */
+    justify-content: space-between;
   }
   
   .full-height {
@@ -90,27 +117,62 @@
   .delay-4 {
     transition-delay: 0.8s;
   }
+  
+  /* Mobile Styles */
+  @media (max-width: 600px) {
+    .full-height-row {
+      flex-direction: column; /* Stack items vertically on mobile */
+    }
+  
+    .dark-overlay {
+      background-color: rgba(0, 0, 0, 0.4); /* Darker overlay on mobile */
+    }
+  
+    .text-h4 {
+      font-size: 1.5rem; /* Adjust the font size on mobile */
+    }
+  
+    .text-h6 {
+      font-size: 1.2rem; /* Adjust the font size on mobile */
+    }
+  
+    .text-h2 {
+      font-size: 2rem; /* Adjust the font size on mobile */
+    }
+  
+    .fade-bee {
+      transform: translateY(10px); /* Reduce vertical movement on mobile */
+    }
+  }
+  
+  /* Tablet Styles */
+  @media (min-width: 600px) and (max-width: 960px) {
+    .text-h4 {
+      font-size: 2rem; /* Adjust the font size for tablets */
+    }
+  
+    .text-h6 {
+      font-size: 1.5rem; /* Adjust the font size for tablets */
+    }
+  
+    .text-h2 {
+      font-size: 2.5rem; /* Adjust the font size for tablets */
+    }
+  }
+  
+  /* Desktop Styles */
+  @media (min-width: 960px) {
+    .text-h4 {
+      font-size: 2.5rem; /* Adjust the font size for desktop */
+    }
+  
+    .text-h6 {
+      font-size: 1.8rem; /* Adjust the font size for desktop */
+    }
+  
+    .text-h2 {
+      font-size: 3rem; /* Adjust the font size for desktop */
+    }
+  }
   </style>
-  
-  <script>
-  export default {
-    mounted() {
-      const observer = new IntersectionObserver(
-        (entries, obs) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('animate');
-              obs.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.2 }
-      );
-  
-      document.querySelectorAll('.fade-bee').forEach((el) => {
-        observer.observe(el);
-      });
-    },
-  };
-  </script>
   

@@ -1,38 +1,56 @@
 <template>
     <v-card class="pa-16 parent-card" color="#fb7c1c">
-      <v-row class="section-container">
+      <v-row class="section-container" no-gutters>
         <!-- Left Image -->
-        <v-col align="center" cols="4" class="pa-0 fade-bee delay-1">
+        <v-col
+          align="center"
+          :cols="12"
+          :md="4"
+          class="pa-0 fade-bee delay-1"
+        >
           <v-img
             src="/images/service-image-1.jpg"
-            height="50vh"
-            width="50vw"
+            height="auto"
+            max-height="50vh"
+            width="100%"
             cover
           />
         </v-col>
   
         <!-- Middle Image -->
-        <v-col align="center" cols="4" class="pa-0 fade-bee delay-2">
+        <v-col
+          align="center"
+          :cols="12"
+          :md="4"
+          class="pa-0 fade-bee delay-2"
+        >
           <v-img
             src="/images/service-image-1.jpg"
-            height="50vh"
-            width="50vw"
+            height="auto"
+            max-height="50vh"
+            width="100%"
             cover
           />
         </v-col>
   
         <!-- Right Image -->
-        <v-col align="center" cols="4" class="pa-0 fade-bee delay-3">
+        <v-col
+          align="center"
+          :cols="12"
+          :md="4"
+          class="pa-0 fade-bee delay-3"
+        >
           <v-img
             src="/images/service-image-1.jpg"
-            height="50vh"
-            width="50vw"
+            height="auto"
+            max-height="50vh"
+            width="100%"
             cover
           />
         </v-col>
   
         <!-- Lowered Overlapped Card on All Three Images -->
-        <v-card class="overlapped-card ">
+        <v-card class="overlapped-card">
           <div class="text-h5 text-center">
             <b>Building a House?</b>
           </div>
@@ -49,6 +67,28 @@
       </v-row>
     </v-card>
   </template>
+  
+  <script>
+  export default {
+    mounted() {
+      const observer = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('animate');
+              obs.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.2 }
+      );
+  
+      document.querySelectorAll('.fade-bee').forEach((el) => {
+        observer.observe(el);
+      });
+    },
+  };
+  </script>
   
   <style scoped>
   /* Parent card styling */
@@ -74,7 +114,7 @@
   /* To make sure the card overlaps the images */
   .overlapped-card {
     position: absolute;
-    top: 100%; /* Further lowered */
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(255, 255, 255, 0.9); /* Slightly more opaque */
@@ -105,33 +145,65 @@
   .delay-1 {
     transition-delay: 0.2s;
   }
+  
   .delay-2 {
     transition-delay: 0.4s;
   }
+  
   .delay-3 {
     transition-delay: 0.6s;
   }
+  
+  /* Mobile: Adjust the font size and layout for small screens */
+  @media (max-width: 600px) {
+    .text-h5 {
+      font-size: 1.5rem;
+    }
+    .text-body1 {
+      font-size: 1rem;
+    }
+    .overlapped-card {
+      position: absolute;
+      top: 80%; /* Adjusted position */
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 95%;
+    }
+  }
+  
+  /* Tablet: Adjust for medium screens */
+  @media (min-width: 600px) and (max-width: 960px) {
+    .text-h5 {
+      font-size: 2rem;
+    }
+    .text-body1 {
+      font-size: 1.2rem;
+    }
+    .overlapped-card {
+      position: absolute;
+      top: 70%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 90%;
+    }
+  }
+  
+  /* Desktop: Adjust for larger screens */
+  @media (min-width: 960px) {
+    .text-h5 {
+      font-size: 2.5rem;
+    }
+    .text-body1 {
+      font-size: 1.5rem;
+    }
+  
+    .overlapped-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 80%;
+    }
+  }
   </style>
-  
-  <script>
-  export default {
-    mounted() {
-      const observer = new IntersectionObserver(
-        (entries, obs) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('animate');
-              obs.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.2 }
-      );
-  
-      document.querySelectorAll('.fade-bee').forEach((el) => {
-        observer.observe(el);
-      });
-    },
-  };
-  </script>
   

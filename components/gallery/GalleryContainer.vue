@@ -1,6 +1,5 @@
 <template>
     <div>
-      <!-- Header -->
       <v-card width="100vw" height="20vh" color="#f8741d" class="d-flex justify-center align-center">
         <div class="white--text pa-10">
           <div class="text-h5 pb-5" align="center">Our Gallery</div>
@@ -8,22 +7,24 @@
         </div>
       </v-card>
   
-      <!-- Gallery -->
       <v-row no-gutters>
         <v-col
           v-for="(img, index) in images"
           :key="index"
           align="center"
-          cols="4"
-          class="pa-0"
+          :cols="12"
+          :md="4"
+          :lg="4"
+          class="pa-2"
         >
           <div class="image-wrapper flip-card" :class="`delay-${(index % 3) + 1}`">
             <div class="img-container" @click="zoomImage(`/images/${img}`)">
               <v-img
                 class="flip-card-inner"
                 :src="`/images/${img}`"
-                height="50vh"
-                width="50vw"
+                height="auto"
+                width="100%"
+                max-height="300px"
                 cover
               />
               <div class="dark-overlay" />
@@ -32,7 +33,6 @@
         </v-col>
       </v-row>
   
-      <!-- Zoom Modal -->
       <div v-if="zoomedImage" class="zoom-overlay" @click="zoomedImage = null">
         <img :src="zoomedImage" class="zoomed-image" />
       </div>
@@ -143,6 +143,41 @@
   }
   .delay-3 {
     transition-delay: 0.5s;
+  }
+  
+  /* Mobile: Adjust the font size for small screens */
+  @media (max-width: 600px) {
+    .text-h5 {
+      font-size: 1.5rem; /* Adjusted for mobile */
+    }
+    .text-h2 {
+      font-size: 2rem; /* Adjusted for mobile */
+    }
+  }
+  
+  /* Tablet: Adjust for medium screens */
+  @media (min-width: 600px) and (max-width: 960px) {
+    .text-h5 {
+      font-size: 2rem; /* Medium size for tablets */
+    }
+    .text-h2 {
+      font-size: 2.5rem; /* Medium size for tablets */
+    }
+  }
+  
+  /* Desktop: Adjust for larger screens */
+  @media (min-width: 960px) {
+    .text-h5 {
+      font-size: 2.5rem; /* Slightly larger size for larger screens */
+    }
+    .text-h2 {
+      font-size: 3rem; /* Slightly larger size for larger screens */
+    }
+  
+    .v-img {
+      height: auto;
+      max-height: 400px;
+    }
   }
   </style>
   
