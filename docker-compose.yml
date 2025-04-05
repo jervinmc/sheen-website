@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile  # Path to the Dockerfile
     working_dir: /app
     volumes:
-      - ./app:/app
+      - .:/app   # Mount the current directory to /app inside the container
     command: npm run dev
     ports:
       - "3000:3000"
@@ -20,7 +20,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf  # Custom nginx config
       - /etc/letsencrypt/live/sheen-antel.homeagent.site:/etc/letsencrypt/live/sheen-antel.homeagent.site  # Mount Let's Encrypt certificates
       - ./dist:/usr/share/nginx/html   # Mount the `dist` folder to serve the built app
     networks:
