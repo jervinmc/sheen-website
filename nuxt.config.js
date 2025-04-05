@@ -7,21 +7,21 @@ export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
   router: {
-    middleware: ["authenticated"]
+    // middleware: ["authenticated"]
   },
 
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: ``,
-    title: 'UDelivery Admin',
+    title: 'Home',
     htmlAttrs: {
       lang: 'en'
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      { hid: 'Sheena Sola', name: 'Sheena Sola', content: 'Sheena Sola' },
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
@@ -79,7 +79,19 @@ export default {
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
     '@nuxtjs/auth',
+    '@nuxtjs/sitemap',
+    '@nuxtjs/robots'
   ],
+  sitemap: {
+    hostname: 'https://www.sheen-sola.agent',
+    gzip: true,
+    routes: ['/']
+  },
+  robots: {
+    UserAgent: '*',
+    Disallow: ['/admin', '/login'],
+    Allow: '/',
+  },
   axios: {
     baseURL: process.env.BASE_URL_DEV
   },
