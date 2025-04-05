@@ -15,7 +15,7 @@ services:
       - app-network
 
   nginx:
-    image: nginx:alpine  # Keep using the official Nginx image for production
+    image: nginx:alpine
     ports:
       - "80:80"
       - "443:443"
