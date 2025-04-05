@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   nuxt:
-    image: node:20-alpine
+    build:
+      context: .  # Context refers to the root directory, where Dockerfile should be
+      dockerfile: Dockerfile  # Path to the Dockerfile
     working_dir: /app
     volumes:
       - ./app:/app
@@ -13,7 +15,7 @@ services:
       - app-network
 
   nginx:
-    image: nginx:alpine
+    image: nginx:alpine  # Keep using the official Nginx image for production
     ports:
       - "80:80"
       - "443:443"
@@ -23,7 +25,6 @@ services:
       - ./dist:/usr/share/nginx/html   # Mount the `dist` folder to serve the built app
     networks:
       - app-network
-    # Do not use `depends_on` here because it is unnecessary for nginx to depend on nuxt in this case
 
 networks:
   app-network:
